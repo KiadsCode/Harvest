@@ -1,0 +1,6 @@
+var HaskIsNice = 56;
+print(HaskIsNice);
+var ish = HaskIsNice;
+input("This is Input system of Hask: ", ish);
+print(ish);
+getin();

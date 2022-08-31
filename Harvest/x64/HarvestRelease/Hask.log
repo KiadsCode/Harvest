@@ -1,0 +1,22 @@
+﻿  FindUtil.cpp
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,21): warning C4305: инициализация: усечение из "int" в "const char"
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,23): warning C4309: инициализация: усечение константного значения
+C:\Users\Acer\source\repos\Hask\Core\FindUtil.cpp(21,15): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Acer\source\repos\Hask\Core\FindUtil.cpp(39,15): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  StringUtil.cpp
+C:\Users\Acer\source\repos\Hask\Core\StringUtil.cpp(24,17): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Acer\source\repos\Hask\Core\StringUtil.cpp(40,19): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+  Variable.cpp
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,21): warning C4305: инициализация: усечение из "int" в "const char"
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,23): warning C4309: инициализация: усечение константного значения
+  Function.cpp
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,21): warning C4305: инициализация: усечение из "int" в "const char"
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,23): warning C4309: инициализация: усечение константного значения
+  Hask.cpp
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,21): warning C4305: инициализация: усечение из "int" в "const char"
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,23): warning C4309: инициализация: усечение константного значения
+  Создание кода
+  Previous IPDB not found, fall back to full compilation.
+  All 1057 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
+  Создание кода завершено
+  Hask.vcxproj -> C:\Users\Acer\source\repos\Hask\x64\HaskCompiler\hvrst.exe
