@@ -21,6 +21,8 @@ void ParseScript(string& source);
 void ParseFunctionBody(string& source);
 void ParseFunction(string& source);
 void ParsePrint(string& source);
+bool IsContainsSemiColon(string& source);
+string SErrorText();
 void ParseInput(string& source);
 void GetError(string message, string htfMSG);
 void ParseVariable(string& source);

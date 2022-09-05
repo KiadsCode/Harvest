@@ -22,7 +22,7 @@ int targetLine = 0;
 void ParseScript(string& source) {
 	FU.VARIABLES = Variables;
 	ParseVariable(source);
-	//ParseFunction(source);
+	ParseFunction(source);
 	ParsePrint(source);
 	ParseInput(source);
 }
@@ -62,11 +62,10 @@ void ParsePrint(string& source)
 		else
 			break;
 	}
-	if (source.at(source.length() - 1) != ';') {
-		string text = format("Semicolon required on line - {}", targetLine + 1);
-		GetError(text, "ndc");
+	if (valid != Synx.printf)
 		return;
-	}
+	if (!IsContainsSemiColon(source))
+		return;
 	bool inBrackets = false;
 	string msg = "";
 	bool isVarPrint = false;
@@ -112,6 +111,29 @@ void ParsePrint(string& source)
 			std::cout << msg << endl;
 	}
 }
+
+const unsigned int SemicolonError = 98110;
+
+bool IsContainsSemiColon(string& source) {
+	unsigned int semiColonPoint = SemicolonError;
+	for (size_t i = 0; i < source.length(); i++)
+	{
+		if (source[i] == Synx.comment) {
+			break;
+		}
+		if (source[i] == ';') {
+			semiColonPoint = i;
+			return true;
+		}
+	}
+	GetError(SErrorText(), "ndc");
+	return false;
+}
+
+string SErrorText() {
+	return format("Semicolon required on line - {}", targetLine + 1);
+}
+
 void ParseInput(string& source)
 {
 	int tryTH = 0;
@@ -128,11 +150,10 @@ void ParseInput(string& source)
 	}
 	if (valid != Synx.inputf)
 		tryTH++;
-	if (source.at(source.length() - 1) != ';') {
-		string text = format("Semicolon required on line - {}", targetLine + 1);
-		GetError(text, "ndc");
+	string getFWithSe = Synx.inpuGetF;
+	getFWithSe += ';';
+	if (valid != getFWithSe && valid != Synx.inputf)
 		return;
-	}
 	bool inBrackets = false;
 	string msg = "";
 	int arg = 0;
@@ -142,6 +163,7 @@ void ParseInput(string& source)
 	switch (tryTH)
 	{
 	case 0:
+
 		for (size_t i = valid.length(); i < source.length(); i++)
 		{
 			//Brackets switch
@@ -193,6 +215,8 @@ void ParseInput(string& source)
 			if (val != Synx.inpuGetF)
 				val += source[i];
 		}
+		if (!IsContainsSemiColon(source))
+			return;
 		if (val == Synx.inpuGetF && FU.FindLib("sys", LIBLIST))
 			cin >> val;
 		break;
@@ -237,11 +261,8 @@ void ParseVariable(string& source)
 	}
 	if (valid != Synx.varKeyWord)
 		return;
-	if (source.at(source.length() - 1) != ';') {
-		string text = format("Semicolon required on line - {}", targetLine + 1);
-		GetError(text, "ndc");
+	if (!IsContainsSemiColon(source))
 		return;
-	}
 
 	for (size_t i = Synx.varKeyWord.length() + 1; i < source.length(); i++)
 	{
@@ -309,7 +330,7 @@ void ParseLocalVariable(string& source)
 	}
 	if (valid != Synx.varKeyWord)
 		return;
-	if (source.at(source.length() - 1) != ';')
+	if (!IsContainsSemiColon(source))
 		return;
 
 	for (size_t i = Synx.varKeyWord.length() + 1; i < source.length(); i++)
@@ -388,10 +409,17 @@ int main(int argc, const char* argv[])
 			}
 			if (!isRun && hasError)
 			{
+				Variables.clear();
 				printf("Press any key to continue...");
 				_getch();
 			}
 			return 0;
+
 		}
+	}
+	else
+	{
+		cout << "hvrst <file>\tcompiling script\nhvrst\thelp with commands";
+		return 0;
 	}
 }

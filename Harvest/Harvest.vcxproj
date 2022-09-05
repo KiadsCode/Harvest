@@ -79,7 +79,7 @@
   <ImportGroup Label="ExtensionSettings">
   </ImportGroup>
   <ImportGroup Label="Shared">
-    <Import Project="..\Core\Core.vcxitems" Label="Shared" />
+    <Import Project="..\Util\Util.vcxitems" Label="Shared" />
     <Import Project="..\CoreA\CoreA.vcxitems" Label="Shared" />
     <Import Project="..\Libs\Libs.vcxitems" Label="Shared" />
     <Import Project="..\CoreB\CoreB.vcxitems" Label="Shared" />

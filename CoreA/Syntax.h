@@ -14,6 +14,6 @@ public:
 	const string printf = "print";
 	const string inputf = "input";
 	const string inpuGetF = "getin";
-	const string scrFormat = ".hk";
+	//const string scrFormat = ".hk";
 };
 
