@@ -14,11 +14,13 @@ using namespace std;
 
 sys sLib = sys();
 
+vector<Function> GlobalFunctions;
 vector<Variable> Variables;
 vector<string> LIBLIST;
 
 void ParseScript(string& source);
 void ParseFunctionBody(string& source);
+void ParseFE(string& source);
 void ParseFunction(string& source);
 void ParsePrint(string& source);
 bool IsContainsSemiColon(string& source);

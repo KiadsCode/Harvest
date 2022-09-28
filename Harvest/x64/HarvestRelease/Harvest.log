@@ -1,6 +1,12 @@
-﻿  Создание кода
-  6 of 1058 functions ( 0.6%) were compiled, the rest were copied from previous compilation.
+﻿  Harvest.cpp
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,21): warning C4305: инициализация: усечение из "int" в "const char"
+C:\Users\Acer\source\repos\Hask\CoreA\Syntax.h(9,23): warning C4309: инициализация: усечение константного значения
+C:\Users\Acer\source\repos\Hask\Harvest\Harvest.cpp(55,14): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Acer\source\repos\Hask\Harvest\Harvest.cpp(62,15): warning C4267: =: преобразование из "size_t" в "int"; возможна потеря данных
+C:\Users\Acer\source\repos\Hask\Harvest\Harvest.cpp(214,22): warning C4267: =: преобразование из "size_t" в "unsigned int"; возможна потеря данных
+  Создание кода
+  20 of 1121 functions ( 1.8%) were compiled, the rest were copied from previous compilation.
     0 functions were new in current compilation
-    8 functions had inline decision re-evaluated but remain unchanged
+    56 functions had inline decision re-evaluated but remain unchanged
   Создание кода завершено
   Harvest.vcxproj -> C:\Users\Acer\source\repos\Hask\x64\HaskCompiler\hvrst.exe

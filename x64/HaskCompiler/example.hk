@@ -1,0 +1,5 @@
+var hh = "Hello, World!";
+var text = "HHHH";
+inputf(text, text);
+printf(text);
+getin;

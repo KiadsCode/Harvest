@@ -20,9 +20,10 @@ vector<Variable> FunctionLocalVariables;
 int targetLine = 0;
 
 void ParseScript(string& source) {
+	sLib.update(GlobalFunctions);
 	FU.VARIABLES = Variables;
 	ParseVariable(source);
-	ParseFunction(source);
+	//ParseFunction(source);
 	ParsePrint(source);
 	ParseInput(source);
 }
@@ -30,6 +31,8 @@ void ParseScript(string& source) {
 void ParseFunction(string& source) {
 	string valid = "";
 	string funcName = "";
+	int onLine = 0;
+	int endLine = 0;
 	for (int i = 0; i < source.length(); i++) {
 		if (valid != Synx.voidKeyWord)
 			valid += i;
@@ -42,6 +45,23 @@ void ParseFunction(string& source) {
 	{
 		if (source[i] != ' ' && source[i] != '(')
 			funcName += source[i];
+		else
+			break;
+	}
+
+	for (size_t i = 0; i < SourceCode.size(); i++)
+	{
+		if (SourceCode[i] == "{") {
+			onLine = i;
+			break;
+		}
+	}	
+	for (size_t i = 0; i < SourceCode.size(); i++)
+	{
+		if (SourceCode[i] == "}") {
+			endLine = i;
+			break;
+		}
 	}
 }
 
@@ -49,6 +69,70 @@ void ParseFunctionBody(string& source) {
 	ParseLocalVariable(source);
 	ParsePrint(source);
 	ParseInput(source);
+}
+
+void ParseFE(string& source)
+{
+	string valid = "";
+	for (size_t i = 0; i < source.length(); i++)
+	{
+		if (source[i] != '(' && source[i] != ')') {
+			valid += source[i];
+		}
+		else
+			break;
+	}
+	if (valid == "")
+		return;
+	if (!IsContainsSemiColon(source))
+		return;
+	bool inBrackets = false;
+	string msg = "";
+	bool isVarPrint = false;
+	bool inStringBrackets = false;
+	for (size_t i = valid.length(); i < source.length(); i++)
+	{
+		//Brackets switch
+		switch (source[i])
+		{
+		case '(':
+			inBrackets = true;
+			break;
+		case ')':
+			inBrackets = false;
+			break;
+		}
+
+		if (source[i] == '\"' && inBrackets)
+			inStringBrackets = !inStringBrackets;
+		if (source[i] != '\"' && source[i] != '(' && source[i] != ')' && inBrackets && inStringBrackets) {
+			msg += source[i];
+			isVarPrint = false;
+		}
+		if (source[i] != '\"' && source[i] != '(' && source[i] != ')' && inBrackets && !inStringBrackets) {
+			msg += source[i];
+			isVarPrint = true;
+		}
+	}
+	string arg[] = { msg };
+	if (isVarPrint) {
+		Variable var = Variables.at(FU.FindVarNUM(msg));
+
+
+		if (msg != "" && isVarPrint && var.type == Synx.typeString)
+			arg[0] = var.valueS;
+		if (msg != "" && isVarPrint && var.type == Synx.typeInt)
+			arg[0] = var.valueI;
+	}
+	else {
+		if (msg == "" && isVarPrint) {
+			string text = format("No variable data -LINE-- {}", targetLine + 1);
+			GetError(text, "ndc");
+			return;
+		}
+	}
+
+	sLib.executeFunction(valid, arg);
 }
 
 void ParsePrint(string& source)
@@ -96,10 +180,14 @@ void ParsePrint(string& source)
 	}
 	if (isVarPrint) {
 		Variable var = Variables.at(FU.FindVarNUM(msg));
+		
+		string arg[] = { msg };
+
 		if (msg != "" && isVarPrint && var.type == Synx.typeString)
-			std::cout << var.valueS << endl;
+			arg[0] = var.valueS;
 		if (msg != "" && isVarPrint && var.type == Synx.typeInt)
-			std::cout << var.valueI << endl;
+			arg[0] = var.valueI;
+		sLib.executeFunction(valid, arg);
 	}
 	else {
 		if (msg == "" && isVarPrint) {
@@ -107,8 +195,9 @@ void ParsePrint(string& source)
 			GetError(text, "ndc");
 			return;
 		}
+		string arg[] = { msg };
 		if (msg != "" && !isVarPrint)
-			std::cout << msg << endl;
+			sLib.executeFunction(valid, arg);
 	}
 }
 
@@ -157,9 +246,12 @@ void ParseInput(string& source)
 	bool inBrackets = false;
 	string msg = "";
 	int arg = 0;
+	string varForPrint = "";
 	string varForInput = "";
 	bool inStringBrackets = false;
+	bool isVarPrinting = false;
 	Variable var("", "", "");
+	Variable varPrint("", "", "");
 	switch (tryTH)
 	{
 	case 0:
@@ -185,7 +277,11 @@ void ParseInput(string& source)
 			}
 			if (arg > 1)
 				return;
-			if (source[i] != '\"' && source[i] != '(' && source[i] != ')' && inBrackets && inStringBrackets && arg == 0) {
+			if (source[i] != '\"' && source[i] != '(' && source[i] != ')' && inBrackets && !isVarPrinting && !inStringBrackets && arg == 0) {
+				isVarPrinting = true;
+				varForPrint += source[i];
+			}
+			if (source[i] != '\"' && source[i] != '(' && source[i] != ')' && inBrackets && !isVarPrinting && inStringBrackets && arg == 0) {
 				msg += source[i];
 			}
 			if (source[i] != ' ' && source[i] != ',' && source[i] != '(' && source[i] != ')' && inBrackets && !inStringBrackets && arg == 1) {
@@ -198,7 +294,15 @@ void ParseInput(string& source)
 			return;
 		}
 		var = FU.FindVar(varForInput);
-		std::cout << msg;
+		if(!isVarPrinting)
+			std::cout << msg;
+		else {
+			varPrint = FU.FindVar(varForPrint);
+			if (varPrint.type == Synx.typeInt)
+				std::cout << varPrint.valueI;
+			if (varPrint.type == Synx.typeString)
+				std::cout << varPrint.valueS;
+		}
 		if (var.type == Synx.typeString)
 			cin >> var.valueS;
 		if (var.type == Synx.typeInt) {
@@ -217,6 +321,7 @@ void ParseInput(string& source)
 		}
 		if (!IsContainsSemiColon(source))
 			return;
+
 		if (val == Synx.inpuGetF && FU.FindLib("sys", LIBLIST))
 			cin >> val;
 		break;

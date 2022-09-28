@@ -11,8 +11,8 @@ public:
 	const string voidKeyWord = "void";
 	const string typeString = "string";
 	const string typeInt = "int";
-	const string printf = "print";
-	const string inputf = "input";
+	const string printf = "printf";
+	const string inputf = "inputf";
 	const string inpuGetF = "getin";
 	//const string scrFormat = ".hk";
 };
